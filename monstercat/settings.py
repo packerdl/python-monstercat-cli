@@ -1,7 +1,9 @@
-import os
 import json
+import os
 
 import click
+
+from .utils import pretty_dict
 
 CONFIG_DIR = click.get_app_dir("monstercat-cli")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
@@ -23,6 +25,12 @@ def settings():
 @click.argument("value", type=click.STRING)
 def cmd_set(key, value):
     set(key, value)
+
+
+@settings.command()
+def show():
+    click.echo("")
+    pretty_dict(config)
 
 
 def _save():
