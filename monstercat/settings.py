@@ -49,4 +49,11 @@ def set(key, value):
     _save()
 
 
+def clear(*keys):
+    global config
+    for key in keys:
+        config.pop(key, None)
+    _save()
+
+
 _load()

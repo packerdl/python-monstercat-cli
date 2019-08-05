@@ -10,6 +10,8 @@ setup(
     zip_safe=False,
     install_requires=[
         "click",
+        "halo",
+        "requests",
     ],
     entry_points="""
         [console_scripts]
