@@ -6,9 +6,15 @@ from . import api, settings
 
 
 @click.command()
-@click.option('--email', prompt='Monstercat Email')
-@click.option('--password', prompt='Monstercat Password', hide_input=True)
+@click.option("--email", prompt="Monstercat Email", help="Monstercat email")
+@click.option(
+    "--password",
+    prompt="Monstercat Password",
+    hide_input=True,
+    help="Monstercat password",
+)
 def login(email, password):
+    """Authenticate and create session"""
     spinner = Halo(text="Logging into Monstercat", spinner="dots").start()
     try:
         response = api.login(email, password)
@@ -16,8 +22,7 @@ def login(email, password):
         spinner.succeed("Successfully logged into Monstercat")
     except HTTPError as e:
         body = e["response"].json()
-        if "invalid email" in body["message"] \
-                or "invalid password" in body["message"]:
+        if "invalid email" in body["message"] or "invalid password" in body["message"]:
             spinner.fail("Incorrect email or password")
         else:
             spinner.fail("Unable to login: Unexpected API response")
@@ -28,6 +33,7 @@ def login(email, password):
 
 @click.command()
 def logout():
+    """Clear session information"""
     spinner = Halo(text="Logging out of Monstercat...", spinner="dots").start()
     api.logout()
     settings.clear("cookie")
@@ -36,6 +42,7 @@ def logout():
 
 @click.command()
 def status():
+    """Check session and download permissions"""
     spinner = Halo(text="Checking session...", spinner="dots").start()
     try:
         session = api.session()
