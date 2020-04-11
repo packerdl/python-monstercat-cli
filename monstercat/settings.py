@@ -8,10 +8,13 @@ from .utils import pretty_dict
 CONFIG_DIR = click.get_app_dir("monstercat-cli")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
 DEFAULT_DIRECTORY = os.path.expanduser(os.path.join("~", "Music", "Monstercat"))
+DEFAULT_CATALOG_PATH = os.path.join(DEFAULT_DIRECTORY, 'catalog')
 
 # Default configuration parameters
 config = {
     "directory": DEFAULT_DIRECTORY,
+    "catalog_path": DEFAULT_CATALOG_PATH,
+    "format": "FLAC"
 }
 
 
