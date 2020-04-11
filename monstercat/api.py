@@ -2,13 +2,12 @@ import requests
 
 from . import settings
 
-BASE_URL = "https://connect.monstercat.com"
-API_BASE = BASE_URL + "/api"
+BASE_URL = "https://connect.monstercat.com/v2"
 
-SELF = API_BASE + "/self"
-SESSION = SELF + "/session"
-SIGN_IN = BASE_URL + "/signin"
-SIGN_OUT = BASE_URL + "/signout"
+SELF = f"{BASE_URL}/self"
+SESSION = f"{SELF}/session"
+SIGN_IN = f"{BASE_URL}/signin"
+SIGN_OUT = f"{BASE_URL}/signout"
 
 # Configure session object w/ cookie
 _session = requests.session()
@@ -18,7 +17,7 @@ if "cookie" in settings.config:
 
 
 def login(email, password):
-    r = _session.post(SIGN_IN, data={"email": email, "password": password})
+    r = _session.post(SIGN_IN, json={"email": email, "password": password})
     r.raise_for_status()
     return r
 

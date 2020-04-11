@@ -21,8 +21,8 @@ def login(email, password):
         settings.set("cookie", dict(response.cookies))
         spinner.succeed("Successfully logged into Monstercat")
     except HTTPError as e:
-        body = e["response"].json()
-        if "invalid email" in body["message"] or "invalid password" in body["message"]:
+        body = e.response.json()
+        if "name" in body and "Invalid password or email" in body["name"]:
             spinner.fail("Incorrect email or password")
         else:
             spinner.fail("Unable to login: Unexpected API response")
@@ -48,7 +48,7 @@ def status():
         session = api.session()
         if "user" in session:
             spinner.succeed("Logged in to Monstercat")
-            if "download" in session["permissions"]["catalog"]:
+            if session["user"]["hasGold"]:
                 Halo().succeed("Monstercat Gold Subscriber")
             else:
                 Halo().fail("Account does not have Monstercat Gold")
