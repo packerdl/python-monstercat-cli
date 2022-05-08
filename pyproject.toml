@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "monstercat-cli"
+version = "0.0.0"
+description = "Unofficial command line interface for Monstercat APIs."
+authors = ["Devin Packer"]
+license = "MIT"
+classifiers = [
+    "Private :: Do Not Upload"
+]
+packages = [
+  { include = "monstercat" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "^8.1.3"
+halo = "^0.0.31"
+requests = "^2.27.1"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+black = "^22.3.0"
+pep8-naming = "^0.12.1"
+
+[tool.poetry.scripts]
+monstercat = "monstercat.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
