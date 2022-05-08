@@ -45,15 +45,14 @@ def status():
     """Check session and download permissions"""
     spinner = Halo(text="Checking session...", spinner="dots").start()
     try:
-        session = api.session()
-        if "User" in session:
-            spinner.succeed("Logged in to Monstercat")
-            if session["User"]["HasGold"]:
-                Halo().succeed("Monstercat Gold Subscriber")
-            else:
-                Halo().fail("Account does not have Monstercat Gold")
+        user = api.me()
+        spinner.succeed("Logged in to Monstercat")
+        if user["has_gold"]:
+            Halo().succeed("Monstercat Gold Subscriber")
         else:
-            spinner.fail("Not logged in to Monstercat")
+            Halo().fail("Account does not have Monstercat Gold")
+    except HTTPError:
+        spinner.fail("Not logged in to Monstercat")
     except Exception as e:
         spinner.fail("An exception occurred")
         print(e)

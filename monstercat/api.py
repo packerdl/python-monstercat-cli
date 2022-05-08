@@ -1,6 +1,7 @@
 import requests
 
 from . import settings
+from .models import Release, User
 
 BASE_URL = "https://player.monstercat.app/api"
 
@@ -25,16 +26,19 @@ def logout():
     return r
 
 
-def session():
+def me():
     r = _session.get(f"{BASE_URL}/me")
     r.raise_for_status()
-    return r.json()
+    # If not logged in, the sign in page is returned with 200 status
+    if r.status_code == 200 and r.headers["Content-Type"] == "text/html":
+        raise requests.HTTPError("Not signed in", response=r)
+    return User().load(r.json()["User"])
 
 
 def releases(**kwargs):
     r = _session.get(f"{BASE_URL}/releases", params=kwargs)
     r.raise_for_status()
-    return r.json()
+    return Release().load(r.json()["Releases"]["Data"], many=True)
 
 
 def generate_release_link(release_id, file_format):
