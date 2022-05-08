@@ -46,9 +46,9 @@ def status():
     spinner = Halo(text="Checking session...", spinner="dots").start()
     try:
         session = api.session()
-        if "user" in session:
+        if "User" in session:
             spinner.succeed("Logged in to Monstercat")
-            if session["user"]["hasGold"]:
+            if session["User"]["HasGold"]:
                 Halo().succeed("Monstercat Gold Subscriber")
             else:
                 Halo().fail("Account does not have Monstercat Gold")
