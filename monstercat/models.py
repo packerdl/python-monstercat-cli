@@ -15,6 +15,7 @@ class Release(MonstercatSchema):
     genre_primary = fields.Str(data_key="GenrePrimary")
     genre_secondary = fields.Str(data_key="GenreSecondary")
     in_early_access = fields.Bool(data_key="InEarlyAccess")
+    release_data = fields.DateTime(data_key="ReleaseDate")
     release_type = fields.Str(data_key="type")
     streamable = fields.Bool(data_key="Streamable")
     title = fields.Str(data_key="Title")
