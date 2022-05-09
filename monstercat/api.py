@@ -1,7 +1,7 @@
 import requests
 
 from . import settings
-from .models import Release, User
+from .models import Release, Track, User
 
 BASE_URL = "https://player.monstercat.app/api"
 
@@ -41,8 +41,24 @@ def releases(**kwargs):
     return Release().load(r.json()["Releases"]["Data"], many=True)
 
 
-def generate_release_link(release_id, file_format):
-    return f"{BASE_URL}/release/{release_id}/download?format={file_format}"
+def release(id, **kwargs):
+    r = _session.get(f"{BASE_URL}/catalog/release/{id}", params=kwargs)
+    r.raise_for_status()
+    release = Release().load(r.json()["Release"])
+    tracks = Track().load(r.json()["Tracks"], many=True)
+    return {**release, "tracks": tracks}
+
+
+def download_release_cover(catalog_id, outfile):
+    download_file(f"https://www.monstercat.com/release/{catalog_id}/cover", outfile)
+
+
+def download_track_url(release_id, track_id, file_format):
+    r = _session.get(
+        f"{BASE_URL}/release/{release_id}/track-download/{track_id}",
+        params={"noRedirect": True, "format": file_format},
+    )
+    return r.json()["SignedUrl"]
 
 
 def download_file(url, outfile, callback=None):
