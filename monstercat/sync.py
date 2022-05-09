@@ -10,7 +10,7 @@ from . import api, settings
 
 
 def progress_callback(progress, spinner, name):
-    spinner.text = f"[Downloading - {math.floor(progress * 100)}%] - {name}"
+    spinner.text = f"[{math.floor(progress * 100)}%] | {name}"
 
 
 @click.command()
@@ -42,7 +42,10 @@ def sync(file_format, catalog_path):
             release_folder_name = release_folder_name.rstrip('.')
 
             if release["in_early_access"]:
-                print(f"{release_folder_name} - Skipped (Early Access)")
+                print(f"{release_folder_name} | Skipped (Early Access)")
+                continue
+            elif not release["downloadable"]:
+                print(f"{release_folder_name} | Skipped (Not Downloadable)")
                 continue
 
             print(release_folder_name)
@@ -66,11 +69,13 @@ def sync(file_format, catalog_path):
 
                 track_path = release_folder_path / track_filename
 
-                spinner = Halo(text=f"[Downloading - 0%] {track_filename}")
+                spinner = Halo(text=track_filename)
                 spinner.start()
 
-                if track_path.exists():
-                    spinner.succeed(f"{track_filename} - Skipped (Already Exists)")
+                if not track["downloadable"]:
+                    spinner.fail(f"{track_filename} | Skipped (Not Downloadable)")
+                elif track_path.exists():
+                    spinner.succeed(f"{track_filename} | Skipped (Already Exists)")
                     continue
 
                 download_url = api.download_track_url(

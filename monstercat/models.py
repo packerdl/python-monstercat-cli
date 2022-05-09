@@ -11,10 +11,12 @@ class Release(MonstercatSchema):
     artists_title = fields.Str(data_key="ArtistsTitle")
     brand = fields.Str(data_key="Brand")
     catalog_id = fields.Str(data_key="CatalogId")
+    downloadable = fields.Bool(data_key="Downloadable")
     genre_primary = fields.Str(data_key="GenrePrimary")
     genre_secondary = fields.Str(data_key="GenreSecondary")
     in_early_access = fields.Bool(data_key="InEarlyAccess")
     release_type = fields.Str(data_key="type")
+    streamable = fields.Bool(data_key="Streamable")
     title = fields.Str(data_key="Title")
 
 
