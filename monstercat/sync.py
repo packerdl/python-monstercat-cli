@@ -1,4 +1,5 @@
 import math
+import re
 import time
 from pathlib import Path
 
@@ -35,6 +36,9 @@ def sync(file_format, catalog_path):
             if "catalog_id" in release:
                 release_folder_name = f"{release['catalog_id']} - {release_folder_name}"
 
+            # Remove troublesome characters in folder name
+            release_folder_name = re.sub(r'[^\w\-_\. ]', '_', release_folder_name)
+
             if release["in_early_access"]:
                 print(f"{release_folder_name} - Skipped (Early Access)")
                 continue
@@ -54,6 +58,10 @@ def sync(file_format, catalog_path):
                     f"{track['track_number']:02} - {track['artists_title']} - "
                     f"{track['title']}.{extension}"
                 )
+
+                # Remove troublesome characters in file name
+                track_filename = re.sub(r'[^\w\-_\. ]', '_', track_filename)
+
                 track_path = release_folder_path / track_filename
 
                 spinner = Halo(text=f"[Downloading - 0%] {track_filename}")
