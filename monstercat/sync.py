@@ -38,6 +38,8 @@ def sync(file_format, catalog_path):
 
             # Remove troublesome characters in folder name
             release_folder_name = re.sub(r'[\\/*?:"<>|]', ' ', release_folder_name)
+            # NTFS cannot have trailing periods in directory name
+            release_folder_name = release_folder_name.rstrip('.')
 
             if release["in_early_access"]:
                 print(f"{release_folder_name} - Skipped (Early Access)")
