@@ -87,11 +87,14 @@ def sync(file_format, catalog_path):
                 except Exception as e:
                     spinner.fail(f"{track_filename}\n{e}")
 
-                # Be nice to the Monstercat servers!
+                # Be nice to the Monstercat servers! (Between tracks)
                 time.sleep(1)
+
+            # Be nice to the Monstercat servers! (Between releases)
+            time.sleep(3)
 
         skip += limit
 
-        # Be nice to the Monstercat servers!
+        # Be nice to the Monstercat servers! (Between catalog pages)
         time.sleep(5)
         releases = api.releases(offset=skip, limit=limit)
